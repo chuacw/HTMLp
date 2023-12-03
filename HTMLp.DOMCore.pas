@@ -170,11 +170,13 @@ type
     constructor Create(AOwnerNode: TNode);
   public                                  
     destructor Destroy; override;
-    
-    function GetItem(index: Integer): TNode; virtual;
+
+    function GetItem(index: Integer): TNode; overload; virtual;
+    function GetItem(const Name: string): TNode; overload; virtual;
     function GetFirst: TNode;
     function GetLast: TNode;
     property Items[Index: Integer]: TNode read GetItem; default;
+    property Items[const Name: string]: TNode read GetItem; default;
     property Count: Integer read GetLength;
   end;
 
@@ -989,6 +991,20 @@ function TNodeList.GetItem(index: Integer): TNode;
 begin
   Result := nil;
   if (index >= 0) and (index < Count) then Result := FList[index];
+end;
+
+function TNodeList.GetItem(const Name: string): TNode;
+var
+  I: NativeInt;
+  LNode: TNode;
+begin
+  for I := 0 to FList.Count-1 do
+    begin
+      LNode := FList[I];
+      if SameText(LNode.Name, Name) then
+        Exit(LNode);
+    end;
+  Result := nil;
 end;
 
 function TNodeList.GetFirst: TNode;
