@@ -1537,35 +1537,35 @@ end;
 
 function TElement.InsertSingleNode(newChild, refChild: TNode): TNode;
 begin
-  inherited;
+  Result := inherited;
 
   ReloadChildElements;
 end;
 
 function TElement.InsertBefore(newChild, refChild: TNode): TNode;
 begin
-  inherited;
+  Result := inherited;
 
   ReloadChildElements;
 end;
 
 function TElement.ReplaceChild(newChild, oldChild: TNode): TNode;
 begin
-  inherited;
+  Result := inherited;
 
   ReloadChildElements;
 end;
 
 function TElement.AppendChild(newChild: TNode): TNode;
 begin
-  inherited;
+  Result := inherited;
 
   ReloadChildElements;
 end;
 
 function TElement.RemoveChild(oldChild: TNode): TNode;
 begin
-  inherited;
+  Result := inherited;
 
   ReloadChildElements;
 end;
