@@ -1,6 +1,6 @@
 ﻿# HTMLp
 Delphi Dom HTML Parser and Converter. 
-> Fork from: https://sourceforge.net/projects/htmlp/
+> Forked from: https://github.com/ange007/HTMLp
 
 ## Original Authors
 * Krzysztof Kochanski
@@ -8,3 +8,5 @@ Delphi Dom HTML Parser and Converter.
 
 ## Contributors
 * [Roman Yankovsky](https://github.com/RomanYankovsky)
+* [Chee-Wee Chua](https://github.com/chuacw)
+
