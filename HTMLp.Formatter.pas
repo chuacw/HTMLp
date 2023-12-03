@@ -30,7 +30,7 @@ type
     constructor Create(ACapacity: Integer);
     function EndWithWhiteSpace: Boolean;
     function TailMatch(const Tail: WideString): Boolean;
-    function ToString: WideString;
+    function ToString: WideString; reintroduce;
     procedure AppendText(const TextStr: WideString);
     property Length: Integer read FLength;
   end;
