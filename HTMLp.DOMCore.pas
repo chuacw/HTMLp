@@ -168,7 +168,7 @@ type
     property OwnerNode: TNode read FOwnerNode;
 
     constructor Create(AOwnerNode: TNode);
-  public                                  
+  public
     destructor Destroy; override;
 
     function GetItem(index: Integer): TNode; overload; virtual;
@@ -280,14 +280,14 @@ type
 
     function ExportNode(otherDocument: TDocument; deep: Boolean): TNode; override;
 
+    constructor Create(ownerDocument: TDocument; const namespaceURI, qualifiedName: string; withNS: Boolean);
+    destructor Destroy; override;
+  public
     function InsertBefore(newChild, refChild: TNode): TNode; override;
     function ReplaceChild(newChild, oldChild: TNode): TNode; override;
     function RemoveChild(oldChild: TNode): TNode; override;
     function AppendChild(newChild: TNode): TNode; override;
 
-    constructor Create(ownerDocument: TDocument; const namespaceURI, qualifiedName: string; withNS: Boolean);
-    destructor Destroy; override;
-  public
     function CloneNode(deep: Boolean): TNode; override;
     function GetAttribute(const name: string): string;
     function GetAttributeNode(const name: string): TAttr;
