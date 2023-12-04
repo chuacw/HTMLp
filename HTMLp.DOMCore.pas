@@ -136,6 +136,10 @@ type
     function GetInnerHTML: string;
     function GetOuterHTML: string;
     {}
+    property innerHTML: string read GetInnerHTML;
+    property innerText: string read GetInnerText;
+    property outerHTML: string read GetOuterHTML;
+
     property Name: string read GetNodeName;
     property Value: string read GetNodeValue write SetNodeValue;
     property NodeType: Integer read GetNodeType;
@@ -258,7 +262,7 @@ type
     procedure SetNodeValue(const value: string); override;
   public
     function CloneNode(deep: Boolean): TNode; override;
-    
+
     property Name: string read GetNodeName;
     property Specified: Boolean read GetSpecified;
     property Value: string read GetNodeValue write SetNodeValue;
@@ -281,8 +285,8 @@ type
     function ExportNode(otherDocument: TDocument; deep: Boolean): TNode; override;
 
     constructor Create(ownerDocument: TDocument; const namespaceURI, qualifiedName: string; withNS: Boolean);
-    destructor Destroy; override;
   public
+    destructor Destroy; override;
     function InsertBefore(newChild, refChild: TNode): TNode; override;
     function ReplaceChild(newChild, oldChild: TNode): TNode; override;
     function RemoveChild(oldChild: TNode): TNode; override;
@@ -299,7 +303,7 @@ type
     function HasAttribute(const name: string): Boolean;
     function HasAttributeNS(const namespaceURI, localName: string): Boolean;
     function CheckAttribute(const attr, value: string): Boolean;
-    procedure SetAttribute(const name, value: string);
+    function SetAttribute(const name, value: string): TAttr;
     procedure RemoveAttribute(const name: string);
     procedure SetAttributeNS(const namespaceURI, qualifiedName, value: string);
     procedure RemoveAttributeNS(const namespaceURI, localName: string);
@@ -410,6 +414,7 @@ type
     procedure RemoveSearchNodeList(NodeList: TNodeList);
     procedure InvalidateSearchNodeLists;
     procedure SetDocType(value: TDocumentType);
+
   public
     constructor Create(doctype: TDocumentType);
     destructor Destroy; override;
@@ -505,7 +510,7 @@ type
     constructor Create(AOwnerNode: TNode; const namespaceURI, name: string; const maxDeep: Integer = 0);
     destructor Destroy; override;
     
-    procedure Invalidate; 
+    procedure Invalidate;
     function GetItem(index: Integer): TNode; override;
   end;
 
@@ -611,7 +616,7 @@ begin
     FChildNodes.Clear(True);
     FChildNodes.Free;
   end;
-  
+
   if Assigned(FAttributes) then
   begin
     FAttributes.Clear(True);
@@ -743,7 +748,6 @@ function TNode.InsertSingleNode(newChild, refChild: TNode): TNode;
 var
   I: Integer;
 begin
-  Result := nil;
 
   if not (CanInsert(newChild))
     or newChild.AncestorOf(Self) then
@@ -1010,7 +1014,7 @@ end;
 function TNodeList.GetFirst: TNode;
 begin
   Result := nil;
-  if FList.Count > 0 then Result := FList[0];  
+  if FList.Count > 0 then Result := FList[0];
 end;
 
 function TNodeList.GetLast: TNode;
@@ -1027,7 +1031,7 @@ begin
   begin
     for I := 0 to Count - 1 do Items[I].Free;
   end;
-  
+
   FList.Clear;
 end;
 
@@ -1590,14 +1594,14 @@ begin
   if Assigned(Attr) then Result := Attr.Value;
 end;
 
-procedure TElement.SetAttribute(const name, value: string);
+function TElement.SetAttribute(const name, value: string): TAttr;
 var
   newAttr: TAttr;
 begin
   newAttr := FOwnerDocument.CreateAttribute(name);
   newAttr.Value := value;
 
-  SetAttributeNode(newAttr);
+  Result := SetAttributeNode(newAttr);
 end;
 
 function TElement.SetAttributeNode(newAttr: TAttr): TAttr;
@@ -1977,10 +1981,9 @@ function TElement.GetElementsByCSSSelector(const cssSelector: string): TNodeList
   end;
 
 var
-  I, J: Integer;
+  I: Integer;
   regexMatch: TMatch;
   keyList, XPathKeyList: TArray<string>;
-  findAttrs: array of string;
   fullSelector, currentSelector: string;
   XPathChain, fullXPath: string;
   currentChain, symbol, val, paramGroup, pseudoClass: string;
@@ -2127,6 +2130,7 @@ begin
   if Assigned(FDocType) then FDocType.FOwnerDocument := Self;
   FNamespaceURIList := TNamespaceURIList.Create;
   FSearchNodeLists := TList.Create;
+
 end;
 
 destructor TDocument.Destroy;
@@ -2230,7 +2234,7 @@ end;
 
 function TDocument.CreateScript(const data: string): TScript;
 begin
-  Result := TScript.Create(Self, data)
+  Result := TScript.Create(Self, data);
 end;
 
 function TDocument.CreateTextNode(const data: string): TTextNode;
@@ -2262,7 +2266,7 @@ function TDocument.CreateEntityReference(const name: string): TEntityReference;
 begin
   Result := TEntityReference.Create(Self, name);
 end;
-                                        
+
 function TDocument.ImportNode(importedNode: TNode; deep: Boolean): TNode;
 begin
   Result := importedNode.ExportNode(Self, deep);
@@ -2285,7 +2289,7 @@ end;
 constructor TProcessingInstruction.Create(ownerDocument: TDocument; const target, data: string);
 begin
   inherited Create(ownerDocument, '', '', False);
-  
+
   FNodeName := target;
   FNodeValue := data;
 end;
