@@ -34,7 +34,8 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    function ParseString(const htmlStr: WideString): TDocument;
+    function ParseString(const htmlStr: string): TDocument; overload;
+    function ParseString(const htmlStr: WideString): TDocument; overload;
     property HTMLDocument: TDocument read FHTMLDocument;
   end;
 
@@ -188,6 +189,34 @@ begin
   FHTMLDocument.DocumentElement.AppendChild(Result);
 end;
 
+function THTMLParser.ParseString(const htmlStr: string): TDocument;
+begin
+  FHTMLReader.HTMLStr := htmlStr;
+  FHTMLDocument := DomImplementation.CreateEmptyDocument(nil);
+  FCurrentNode := FHTMLDocument;
+  try
+    while FHTMLReader.Read do;
+  except
+    // TODO: Add event ?
+  end;
+
+  Result := FHTMLDocument;
+end;
+
+function THTMLParser.ParseString(const htmlStr: WideString): TDocument;
+begin
+  FHTMLReader.HTMLStr := htmlStr;
+  FHTMLDocument := DomImplementation.CreateEmptyDocument(nil);
+  FCurrentNode := FHTMLDocument;
+  try
+    while FHTMLReader.Read do;
+  except
+    // TODO: Add event ?
+  end;
+
+  Result := FHTMLDocument;
+end;
+
 procedure THTMLParser.ProcessAttributeEnd(Sender: TObject);
 begin
   FCurrentNode := (FCurrentNode as TAttr).OwnerElement;
@@ -288,20 +317,6 @@ var
 begin
   TextNode := FHTMLDocument.CreateTextNode(FHTMLReader.NodeValue);
   FCurrentNode.AppendChild(TextNode);
-end;
-
-function THTMLParser.ParseString(const htmlStr: WideString): TDocument;
-begin
-  FHTMLReader.HTMLStr := htmlStr;
-  FHTMLDocument := DomImplementation.CreateEmptyDocument(nil);
-  FCurrentNode := FHTMLDocument;
-  try
-    while FHTMLReader.Read do;
-  except
-    // TODO: Add event ?
-  end;
-
-  Result := FHTMLDocument;
 end;
 
 end.
