@@ -3,7 +3,7 @@ unit HTMLp.NodeUtils;
 interface
 
 uses
-  HTMLp.DomCore, System.SysUtils;
+  HTMLp.DomCore, System.SysUtils, HTMLp.Enumerators;
 
 function FindElement(const ANodeList: TNodeList;
   const AFunc: TFunc<TNode, Boolean>): TNode;
@@ -20,6 +20,11 @@ type
     function GetBody: TElement;
   public
     property Body: TElement read GetBody;
+  end;
+
+  TNodeListHelper = class helper for TNodeList
+  public
+    function GetEnumerator: TNodeListEnumerator;
   end;
 
 implementation
@@ -67,6 +72,13 @@ end;
 function TDocumentHelper.GetBody: TElement;
 begin
   Result := DocumentElement.ChildNodes['body'] as TElement;
+end;
+
+{ TNodeListHelper }
+
+function TNodeListHelper.GetEnumerator: TNodeListEnumerator;
+begin
+  Result := TNodeListEnumerator.Create(Self);
 end;
 
 end.

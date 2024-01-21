@@ -14,7 +14,6 @@ type
   public
     constructor Create(const ANodeList: TNodeList);
     destructor Destroy; override;
-    function GetEnumerator: TNodeListEnumerator;
 
     function MoveNext: Boolean; virtual;
     property Current: TNode read GetCurrent;
@@ -54,11 +53,6 @@ end;
 function TNodeListEnumerator.GetCurrent: TNode;
 begin
   Result := FNodeList[FIndex];
-end;
-
-function TNodeListEnumerator.GetEnumerator: TNodeListEnumerator;
-begin
-  Result := Self;
 end;
 
 function TNodeListEnumerator.MoveNext: Boolean;
