@@ -3,7 +3,8 @@ unit HTMLp.DomCore;
 interface
 
 uses
-  Classes, SysUtils, StrUtils, RegularExpressions, Math;
+  System.Classes, System.SysUtils, System.StrUtils, System.RegularExpressions,
+  System.Math, System.Types;
 
 const
   TAB = 9;
@@ -303,6 +304,12 @@ type
     function HasAttribute(const name: string): Boolean;
     function HasAttributeNS(const namespaceURI, localName: string): Boolean;
     function CheckAttribute(const attr, value: string): Boolean;
+
+    /// <summary>
+    /// <remarks>The returned is the old TAttr and should be freed if it's not used.
+    /// Otherwise, it'll cause a memory leak.
+    /// </remarks>
+    /// </summary>
     function SetAttribute(const name, value: string): TAttr;
     procedure RemoveAttribute(const name: string);
     procedure SetAttributeNS(const namespaceURI, qualifiedName, value: string);
@@ -310,18 +317,33 @@ type
     {}
     procedure RemoveChilds(const attr, value: string);
     {}
+    /// <summary>
+    /// <remarks>The returned TNodeList should be freed after use</remarks>
+    /// </summary>
     function GetElementsByAttr(const attrs, values: array of string; const deeper: Boolean = True): TNodeList; overload;
     function GetElementByAttr(const attrs, values: array of string; const deeper: Boolean = True): TElement; overload;
     {}
+    /// <summary>
+    /// <remarks>The returned TNodeList should be freed after use</remarks>
+    /// </summary>
     function GetElementsByAttr(const attr, value: string; const deeper: Boolean = True): TNodeList; overload;
     function GetElementByAttr(const attr, value: string; const deeper: Boolean = True): TElement; overload;
     {}
+    /// <summary>
+    /// <remarks>The returned TNodeList should be freed after use</remarks>
+    /// </summary>
     function GetElementsByClass(const name: string; const deeper: Boolean = True): TNodeList;
     function GetElementByClass(const name: string; const deeper: Boolean = True): TElement;
     {}
+    /// <summary>
+    /// <remarks>The returned TNodeList should be freed after use</remarks>
+    /// </summary>
     function GetElementsByTagName(const name: string; const deep: Integer = 0): TNodeList;
     function GetElementByTagName(const name: string; const deep: Integer = 0): TElement;
     {}
+    /// <summary>
+    /// <remarks>The returned TNodeList should be freed after use</remarks>
+    /// </summary>
     function GetElementsByTagNameNS(const namespaceURI, localName: string; const deep: Integer = 0): TNodeList;
     function GetElementByTagNameNS(const namespaceURI, localName: string; const deep: Integer = 0): TElement;
     {}
@@ -1740,8 +1762,6 @@ function TElement.GetElementsByAttr(const attrs, values: array of string; const 
   var
     I, checkedCount, trueCount: Integer;
   begin
-    Result := False;
-    
     checkedCount := Length(attrs);
     trueCount := 0;
 
@@ -1962,7 +1982,7 @@ function TElement.GetElementsByCSSSelector(const cssSelector: string): TNodeList
     i: Integer;
   begin
     Result := selector;
-
+    i := 1;
     try
       for i := 1 to High(selector) do
       begin

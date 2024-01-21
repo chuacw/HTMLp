@@ -3,8 +3,7 @@ unit HTMLp.HTMLReader;
 interface
 
 uses
-  Classes,
-
+  System.Classes,
   HTMLp.DomCore;
 
 type
@@ -112,7 +111,7 @@ type
 implementation
 
 uses
-  SysUtils;
+  System.SysUtils;
 
 const
   startTagChar = Ord('<');

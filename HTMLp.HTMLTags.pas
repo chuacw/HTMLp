@@ -3,8 +3,7 @@ unit HTMLp.HTMLTags;
 interface
 
 uses
-  Classes,
-
+  System.Classes,
   HTMLp.DomCore;
 
 const
@@ -208,7 +207,7 @@ const
 implementation
 
 uses
-  SysUtils;
+  System.SysUtils;
 
 constructor THTMLTag.Create(const AName: WideString; ANumber: Integer; AParserFlags, AFormatterFlags: THTMLTagFlags);
 begin

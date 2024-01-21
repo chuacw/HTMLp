@@ -11,7 +11,7 @@ function GetEntName(Code: Word): string;
 implementation
 
 uses
-  SysUtils, Classes;
+  System.SysUtils, System.Classes;
 
 const
   EntCount = 252;

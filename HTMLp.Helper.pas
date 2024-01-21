@@ -2,11 +2,10 @@ unit HTMLp.Helper;
 
 interface
 
-uses System.Classes, System.SysUtils, System.StrUtils, System.Math, System.Variants, System.Types,
-      System.Generics.Collections,
-
-      HTMLp.DomCore, HTMLp.Formatter,
-      HTMLp.HtmlParser;
+uses
+  System.Classes, System.SysUtils, System.StrUtils, System.Math,
+  System.Variants, System.Types, System.Generics.Collections,
+  HTMLp.DomCore, HTMLp.Formatter, HTMLp.HtmlParser;
 
 type
   TNode = HTMLp.DomCore.TNode;
